@@ -2,7 +2,6 @@ package web.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,8 +16,8 @@ import web.service.AuthService;
 import web.service.AuthServiceImpl;
 
 
-@WebServlet("/signin")
-public class SigninServlet extends HttpServlet {
+@WebServlet("/signup")
+public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private AuthService authService;
 	
@@ -28,38 +27,35 @@ public class SigninServlet extends HttpServlet {
 		AuthDao authDao = new AuthDaoImpl(pool);
 		authService = new AuthServiceImpl(authDao);
 	}
-
+       
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/auth/signin.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/auth/signup.jsp").forward(request, response);
+		
 	}
+
 	
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*주소창 -> get요청
-		form /method=post ->post요청 */
-		
-//		System.out.println("포스트 요청옴?");
-//		System.out.println(request.getParameter("username"));
-		
+		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=utf-8");
 		response.setCharacterEncoding("utf-8");
-		
 		PrintWriter out = response.getWriter();
 		
-		
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		Map<String, ?> msg = authService.signin(username, password);
-		if(msg.containsKey("200")) {//페이지이동(로그인성공)
-			
-		}else { //로그인실패
+		boolean result = authService.signup(email, name, username, password);
+		
+		if(result == true) {
+			response.sendRedirect("/JspStudy_4452/signin"); //로그인할때 request정보 필요없기때문에 sendRedirect
+		}else {
 			StringBuilder builder = new StringBuilder();
 			builder.append("<body>");
 			builder.append("<script>");
 			
-			builder.append("alert(\"" + (msg.containsKey("400") ? msg.get("400") : msg.get("500")) +"\");");
+			builder.append("alert(\"회원가입 실패\");");
 			builder.append("history.back()");
 			
 			builder.append("</script>");
@@ -67,7 +63,9 @@ public class SigninServlet extends HttpServlet {
 			
 			out.println(builder.toString());
 		}
-			
+		
+		
+		
 		
 	}
 
