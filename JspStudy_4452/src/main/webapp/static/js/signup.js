@@ -46,7 +46,7 @@ signupBtn.onclick = () => {
 			}else{
 				$.ajax({
 					type: "get", //메소드
-					url : "/JspStudy_4452/signup-username-check", //요청주소
+					url : "/JspStudy_4452/auth/signup-username-check", //요청주소
 					data: {
 						"username": username //객체에서 구별 : "키값" : 변수
 					},

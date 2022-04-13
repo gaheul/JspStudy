@@ -26,7 +26,7 @@
 		<div>
 			<h1>회원가입</h1>
 		</div>
-		<form action="/JspStudy_4452/signup" method="post">
+		<form action="/JspStudy_4452/auth/signup" method="post">
 		<div>
 			<div class="item-input">
 				<label class="item-label">이메일</label>
