@@ -55,7 +55,7 @@ public class ProfileUpdateServlet extends HttpServlet {
 		boolean flag= profileService.updateProfile(principalUser.getUser_code(), name, email);
 		
 		if(flag = true) {
-			session.setAttribute("principal", authService.getUser(principalUser.getUsername())); //수정된후 principal
+			//session.setAttribute("principal", authService.getUser(principalUser.getUsername())); //수정된후 principal
 			response.sendRedirect("/JspStudy_4452/profile/mypage");
 		}
 	}

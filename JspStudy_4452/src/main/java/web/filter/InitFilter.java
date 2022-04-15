@@ -17,7 +17,7 @@ import repository.UserDao;
 import repository.UserDaoImpl;
 
 
-@WebFilter("/*") //전체
+@WebFilter(filterName = "servletContextInit") //전체
 public class InitFilter implements Filter {
 	private DBConnectionMgr pool;
 	private AuthDao authDao;

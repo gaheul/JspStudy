@@ -13,13 +13,12 @@ import javax.servlet.http.HttpSession;
 
 import repository.UserDao;
 import repository.user.User;
-import web.service.AuthService;
 import web.service.ProfileService;
 import web.service.ProfileServiceImpl;
 
 
-@WebServlet("/profile/update/password")
-public class PasswordUpdateServlet extends HttpServlet {
+@WebServlet("/profile/delete")
+public class MemberShipWithdrawal extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProfileService profileService;
 	
@@ -29,24 +28,16 @@ public class PasswordUpdateServlet extends HttpServlet {
 		profileService = new ProfileServiceImpl((UserDao)servletContext.getAttribute("userDao"));
 	}
        
-    
+   
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			request.getRequestDispatcher("/WEB-INF/views/profile/password-update.jsp").forward(request, response);
-	}
-	
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String password=request.getParameter("new-password"); //바꾸고자 하는 비밀번호만 전달
-		
 		HttpSession session = request.getSession();
 		User principalUser = (User)session.getAttribute("principal");
-		boolean result = profileService.updatePassword(principalUser.getUser_code(), password);
+		boolean result = profileService.deleteUser(principalUser.getUser_code());
 		if(result == true) {
-			//마이페이지로 이동
-			response.sendRedirect("/JspStudy_4452/profile/mypage");
+			session.invalidate(); //session(강제)만료
+			response.sendRedirect("/JspStudy_4452/auth/signin");
 		}
 	}
 
 	
-
 }
